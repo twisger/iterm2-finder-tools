@@ -19,11 +19,18 @@ on CD_to(theDir)
 		end tell
 	else
 		tell application "iTerm"
-			set newWindow to current window
-			tell newWindow
-				create tab with default profile
-				set sesh to current session
-			end tell
+			try
+				set newWindow to current window
+				tell newWindow
+					create tab with default profile
+					set sesh to current session
+				end tell
+			on error
+				set newWindow to (create window with default profile)
+				tell newWindow
+					set sesh to current session
+				end tell
+			end try
 			tell sesh
 				write text "cd " & theDir & ";clear"
 			end tell
